@@ -1,8 +1,8 @@
 (function () {
-    "use strict";
+    'use strict';
     var $$find = function (arr, predicate) {
-        if (typeof predicate !== "function") {
-            throw new TypeError("predicate must be a function");
+        if (typeof predicate !== 'function') {
+            throw new TypeError('predicate must be a function');
         }
         var length = arr.length >>> 0;
         var thisArg = arguments[1];
@@ -29,19 +29,19 @@
             }
         }
         LabelElement.prototype.updateParams = function (_a) {
-            var _b = _a.tpl, tpl = _b === void 0 ? function () { return ""; } : _b, _c = _a.cssClass, cssClass = _c === void 0 ? null : _c, _d = _a.halign, halign = _d === void 0 ? "center" : _d, _e = _a.valign, valign = _e === void 0 ? "center" : _e, _f = _a.halignBox, halignBox = _f === void 0 ? "center" : _f, _g = _a.valignBox, valignBox = _g === void 0 ? "center" : _g;
+            var _b = _a.tpl, tpl = _b === void 0 ? function () { return ''; } : _b, _c = _a.cssClass, cssClass = _c === void 0 ? null : _c, _d = _a.halign, halign = _d === void 0 ? 'center' : _d, _e = _a.valign, valign = _e === void 0 ? 'center' : _e, _f = _a.halignBox, halignBox = _f === void 0 ? 'center' : _f, _g = _a.valignBox, valignBox = _g === void 0 ? 'center' : _g;
             var _align = {
-                "top": -.5,
-                "left": -.5,
-                "center": 0,
-                "right": .5,
-                "bottom": .5
+                top: -0.5,
+                left: -0.5,
+                center: 0,
+                right: 0.5,
+                bottom: 0.5,
             };
             this._align = [
                 _align[halign],
                 _align[valign],
                 100 * (_align[halignBox] - 0.5),
-                100 * (_align[valignBox] - 0.5)
+                100 * (_align[valignBox] - 0.5),
             ];
             this.tpl = tpl;
         };
@@ -49,9 +49,7 @@
             while (this._node.firstChild) {
                 this._node.removeChild(this._node.firstChild);
             }
-            var children = new DOMParser()
-                .parseFromString(this.tpl(data), "text/html")
-                .body.children;
+            var children = new DOMParser().parseFromString(this.tpl(data), 'text/html').body.children;
             for (var i = 0; i < children.length; ++i) {
                 var el = children[i];
                 this._node.appendChild(el);
@@ -65,7 +63,7 @@
         };
         LabelElement.prototype.initStyles = function (cssClass) {
             var stl = this._node.style;
-            stl.position = "absolute";
+            stl.position = 'absolute';
             if (cssClass && cssClass.length) {
                 this._node.classList.add(cssClass);
             }
@@ -97,16 +95,15 @@
             var cur = this._elements[id];
             if (cur) {
                 cur.updateParams(param);
-                cur.updateData(payload.data);
                 cur.updatePosition(payload.position);
             }
             else {
-                var nodeElem = document.createElement("div");
+                var nodeElem = document.createElement('div');
                 this._node.appendChild(nodeElem);
                 this._elements[id] = new LabelElement({
                     node: nodeElem,
                     data: payload.data,
-                    position: payload.position
+                    position: payload.position,
                 }, param);
             }
         };
@@ -126,7 +123,7 @@
             var pan = _a.pan, zoom = _a.zoom;
             var val = "translate(" + pan.x + "px," + pan.y + "px) scale(" + zoom + ")";
             var stl = this._node.style;
-            var origin = "top left";
+            var origin = 'top left';
             stl.webkitTransform = val;
             stl.msTransform = val;
             stl.transform = val;
@@ -137,24 +134,24 @@
         return LabelContainer;
     }());
     function cyNodeHtmlLabel(_cy, params, options) {
-        var _params = (!params || typeof params !== "object") ? [] : params;
+        var _params = !params || typeof params !== 'object' ? [] : params;
         var _lc = createLabelContainer();
-        _cy.one("render", function (e) {
+        _cy.one('render', function (e) {
             createNodesCyHandler(e);
             wrapCyHandler(e);
         });
-        _cy.on("add", addCyHandler);
-        _cy.on("layoutstop", layoutstopHandler);
-        _cy.on("remove", removeCyHandler);
-        _cy.on("data", updateDataOrStyleCyHandler);
-        _cy.on("style", updateDataOrStyleCyHandler);
-        _cy.on("pan zoom", wrapCyHandler);
-        _cy.on("position bounds", moveCyHandler);
+        _cy.on('add', addCyHandler);
+        _cy.on('layoutstop', layoutstopHandler);
+        _cy.on('remove', removeCyHandler);
+        _cy.on('data', updateDataOrStyleCyHandler);
+        _cy.on('style', updateDataOrStyleCyHandler);
+        _cy.on('pan zoom', wrapCyHandler);
+        _cy.on('position bounds', moveCyHandler);
         return _cy;
         function createLabelContainer() {
             var _cyContainer = _cy.container();
-            var _titlesContainer = document.createElement("div");
-            var _cyCanvas = _cyContainer.querySelector("canvas");
+            var _titlesContainer = document.createElement('div');
+            var _cyCanvas = _cyContainer.querySelector('canvas');
             var cur = _cyContainer.querySelector("[class^='cy-node-html']");
             if (cur) {
                 _cyCanvas.parentNode.removeChild(cur);
@@ -181,7 +178,7 @@
                     if (d.isNode()) {
                         _lc.addOrUpdateElem(d.id(), x, {
                             position: getNodePosition(d),
-                            data: d.data()
+                            data: d.data(),
                         });
                     }
                 });
@@ -193,7 +190,7 @@
             if (param) {
                 _lc.addOrUpdateElem(target.id(), param, {
                     position: getNodePosition(target),
-                    data: target.data()
+                    data: target.data(),
                 });
             }
         }
@@ -216,11 +213,13 @@
         function updateDataOrStyleCyHandler(ev) {
             setTimeout(function () {
                 var target = ev.target;
-                var param = $$find(_params.slice().reverse(), function (x) { return target.is(x.query); });
+                var param = $$find(_params.slice().reverse(), function (x) {
+                    return target.is(x.query);
+                });
                 if (param) {
                     _lc.addOrUpdateElem(target.id(), param, {
                         position: getNodePosition(target),
-                        data: target.data()
+                        data: target.data(),
                     });
                 }
                 else {
@@ -232,15 +231,15 @@
             var cy = _a.cy;
             _lc.updatePanZoom({
                 pan: cy.pan(),
-                zoom: cy.zoom()
+                zoom: cy.zoom(),
             });
         }
         function getNodePosition(node) {
             return {
                 w: node.width(),
                 h: node.height(),
-                x: node.position("x"),
-                y: node.position("y")
+                x: node.position('x'),
+                y: node.position('y'),
             };
         }
     }
@@ -248,24 +247,24 @@
         if (!cy) {
             return;
         }
-        cy("core", "nodeHtmlLabel", function (optArr, options) {
+        cy('core', 'nodeHtmlLabel', function (optArr, options) {
             return cyNodeHtmlLabel(this, optArr, options);
         });
     };
-    if (typeof module !== "undefined" && module.exports) {
+    if (typeof module !== 'undefined' && module.exports) {
         module.exports = function (cy) {
             register(cy);
         };
     }
     else {
-        if (typeof define !== "undefined" && define.amd) {
-            define("cytoscape-nodeHtmlLabel", function () {
+        if (typeof define !== 'undefined' && define.amd) {
+            define('cytoscape-nodeHtmlLabel', function () {
                 return register;
             });
         }
     }
-    if (typeof cytoscape !== "undefined") {
+    if (typeof cytoscape !== 'undefined') {
         register(cytoscape);
     }
-}());
+})();
 //# sourceMappingURL=cytoscape-node-html-label.js.map

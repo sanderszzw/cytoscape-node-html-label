@@ -1,5 +1,5 @@
-declare type IHAlign = "left" | "center" | "right";
-declare type IVAlign = "top" | "center" | "bottom";
+declare type IHAlign = 'left' | 'center' | 'right';
+declare type IVAlign = 'top' | 'center' | 'bottom';
 declare var module: any;
 declare var define: any;
 declare var cytoscape: any;
